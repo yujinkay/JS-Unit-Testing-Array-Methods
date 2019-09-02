@@ -1,0 +1,65 @@
+<script src="../tinytest.js"></script>
+<script>
+  
+function fill(array, value, start, end) {
+    let fillValue = value, 
+        startingIndex = start,
+        endingIndex = end; 
+    const length = array.length; 
+    // If the absolute value of the ending index is greater than the length return the array 
+    if (Math.abs(endingIndex) > length) return array; 
+    // Reassign the starting index 
+    if (!startingIndex || (Math.abs(startingIndex) > length)) startingIndex = 0; 
+    else if (startingIndex < 0) startingIndex = startingIndex + length; 
+    // Reassign the ending index 
+    if (!endingIndex) endingIndex = length; 
+    else if (endingIndex < 0) endingIndex = endingIndex + length; 
+    // Iterate through the array and reassign the values to fillValue
+    for (let i = startingIndex; i < endingIndex; i++) {
+        array[i] = fillValue; 
+    }
+    // Return the original array
+    return array; 
+}
+
+tests({
+  'It should mutate the original array.': function() {
+      const testArray = [1, 1, 1]; 
+      const fillTest = fill(testArray, 2, 0, 3); 
+      eq(JSON.stringify(testArray), JSON.stringify([2, 2, 2])); 
+      eq(JSON.stringify(fillTest), JSON.stringify([2, 2, 2])); 
+  },
+  'It should start from index 0 if no startingIndex.': function() {
+      const testArray = [3, 3, 3];  
+      const fillTest = fill(testArray, 2); 
+      eq(JSON.stringify(fillTest), JSON.stringify([2, 2, 2])); 
+  },
+  'It should end at the last index of array if no endingIndex.': function() {
+      const testArray = [1, 2]; 
+      const fillTest = fill(testArray, 3, 0); 
+      eq(JSON.stringify(testArray), JSON.stringify([3, 3])); 
+      eq(JSON.stringify(fillTest), JSON.stringify([3, 3])); 
+  },
+  'It should start at index 0 if the absolute value of startingIndex is greater than or equal to array.length.': function() {
+      const testArray = [1, 2]; 
+      const fillTest = fill(testArray, 3, -3, 2); 
+      eq(JSON.stringify(testArray), JSON.stringify([3, 3])); 
+      eq(JSON.stringify(fillTest), JSON.stringify([3, 3])); 
+  },
+  'It should start at array.length + startingIndex if startingIndex is less than 0.': function() {
+      const testArray = [1, 2, 3, 4]; 
+      const fillTest = fill(testArray, 5, -3, 2); 
+      eq(JSON.stringify(fillTest), JSON.stringify([1, 5, 3, 4])); 
+  },
+  'It should end at array.length + endingIndex if the endingIndex is negative.': function() {
+      const testArray = [1, 2, 3, 4]; 
+      const fillTest = fill(testArray, 5, 0, -2); 
+      eq(JSON.stringify(fillTest), JSON.stringify([5, 5, 3, 4])); 
+  },
+  'If the absolute value of the endingIndex is greater than or equal to array.length, the array should not be searched.': function() {
+      const testArray = [1, 2, 3, 4]; 
+      const fillTest = fill(testArray, 5, 0, -5); 
+      eq(JSON.stringify(fillTest), JSON.stringify([1, 2, 3, 4])); 
+  }
+});
+</script>

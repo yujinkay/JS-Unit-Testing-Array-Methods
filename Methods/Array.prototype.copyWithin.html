@@ -1,0 +1,124 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function copyWithin(array, target, start, end) {
+    // Declare variables and assign to appropriate values
+    let targetIndex = target,
+        startingIndex = start,
+        endingIndex = end,
+        length = array.length, 
+        copyArray = [],
+        copyArrayIndex = 0; 
+
+    // Set up targetIndex
+    if (targetIndex >= length || Math.abs(endingIndex) >= length) return array; 
+    if (Math.abs(targetIndex) >= length) targetIndex = 0; 
+    else if (targetIndex < 0) targetIndex = targetIndex + length; 
+    // Set up startingIndex
+    if (!startingIndex || Math.abs(startingIndex) > length) startingIndex = 0; 
+    else if (startingIndex < 0) startingIndex = startingIndex + length; 
+    // Set up endingIndex 
+    if (endingIndex < 0) endingIndex = endingIndex + length; 
+    else if (!endingIndex || endingIndex > length) endingIndex = length; 
+    // Copy the elements from startingIndex to endingIndex 
+    for (let i = startingIndex; i < endingIndex; i++) {
+    copyArray.push(array[i]);   
+    }
+    // Override the elements in the original array
+    // Increment the copy index
+    for (let j = targetIndex; j < length; j++) {
+      if (copyArrayIndex in copyArray) {
+          array[j] = copyArray[copyArrayIndex]; 
+          copyArrayIndex++; 
+      }
+    }
+      // Return the mutated array 
+      return array; 
+  }
+
+tests({
+ 'It should not modify the length of the array.': function() {
+    const copyWithinTest = copyWithin([1, 2, 3, 4], 1); 
+    eq(copyWithinTest.length, 4); 
+  },
+  'It should not copy if targetIndex is greater than or equal to array.length.': function() {
+    const copyWithinTest = copyWithin([1, 2, 3, 4], 5); 
+    eq(copyWithinTest.length, 4); 
+    eq(JSON.stringify(copyWithinTest), JSON.stringify([1, 2, 3, 4])); 
+  },
+  'If the absolute value of targetIndex is greater than or equal to array.length, it should be set to 0.': function() {
+    const copyWithinTest = copyWithin([1, 2, 3, 4], -4, 1)
+    eq(JSON.stringify(copyWithinTest), JSON.stringify([2, 3, 4, 4])); 
+  },
+  'If the targetIndex is negative, it should be counted from the end.': function() {
+      const copyWithinTest = copyWithin([1, 2, 3, 4], -1, 2); 
+      eq(copyWithinTest.length, 4); 
+      eq(JSON.stringify(copyWithinTest), JSON.stringify([1, 2, 3, 3])); 
+  },
+  'If the targetIndex is greater than startingIndex, the copied sequence will be trimmed to fit array.length.': function() {
+      const copyWithinTest = copyWithin([1, 2, 3, 4], 2, 0); 
+      eq(copyWithinTest.length, 4); 
+      eq(JSON.stringify(copyWithinTest), JSON.stringify([1, 2, 1, 2])); 
+  },
+  'If startingIndex is negative, it will be counted from the end.': function() {
+      const copyWithinTest = copyWithin([1, 2, 3, 4], 1, -1); 
+      eq(copyWithinTest.length, 4); 
+      eq(JSON.stringify(copyWithinTest), JSON.stringify([1, 4, 3, 4]));
+  },
+  'It should start from index 0 is startingIndex is omitted': function() {
+      const copyWithinTest = copyWithin([1, 2, 3, 4], 2); 
+      eq(copyWithinTest.length, 4); 
+      eq(JSON.stringify(copyWithinTest), JSON.stringify([1, 2, 1, 2]));
+  },
+  'If the absolute value of startingIndex is greater than array.length, it should start from 0.': function() {
+      const copyWithinTest = copyWithin([1, 2, 3, 4], 2, -5); 
+      eq(copyWithinTest.length, 4); 
+      eq(JSON.stringify(copyWithinTest), JSON.stringify([1, 2, 1, 2]));
+  },
+  'If the endingIndex is negative, it will be counted from the end.': function() {
+      const copyWithinTest = copyWithin([1, 2, 3, 4], 2, 0, -1); 
+      eq(copyWithinTest.length, 4); 
+      eq(JSON.stringify(copyWithinTest), JSON.stringify([1, 2, 1, 2]));
+  }, 
+  'If no endingIndex, it should copy until array.length.': function() {
+      const copyWithinTest = copyWithin([1, 2, 3, 4], 2, 0); 
+      eq(copyWithinTest.length, 4); 
+      eq(JSON.stringify(copyWithinTest), JSON.stringify([1, 2, 1, 2]));
+  }, 
+  'It should copy up to but not including the endingIndex.': function() {
+      const copyWithinTest = copyWithin([2, 4, 6, 8], 2, 0, 1); 
+      eq(copyWithinTest.length, 4); 
+      eq(JSON.stringify(copyWithinTest), JSON.stringify([2, 4, 2, 8]));
+  },
+  'It should return the original array if the absolute value of endingIndex is greater than or equal to array.length.': function() {
+      const copyWithinTest = copyWithin([1, 2, 3, 4], 2, 0, -5); 
+      eq(copyWithinTest.length, 4); 
+      eq(JSON.stringify(copyWithinTest), JSON.stringify([1, 2, 3, 4]));
+  } 
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

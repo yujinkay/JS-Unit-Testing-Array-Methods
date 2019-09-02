@@ -1,0 +1,29 @@
+<script src="../tinytest.js"></script>
+<script>
+  function reverse(array) {
+  	// Iterate through the first half and swap the elements
+  	for (let i = 0; i <= Math.floor((array.length - 1) / 2); i++) {
+		// Declare a constant and initialize to the current element 
+		const element = array[i]; 
+		// Reassign the current element to the item in reverse
+  		array[i] = array[array.length - 1 - i]; 
+		// Reassign the item in reverse with the original current element
+  		array[array.length - 1 - i] = element; 
+  	}
+	// Return the mutated array
+  	return array; 
+  }; 
+
+tests({
+ 'It should reverse an array in place.': function() {
+ 	const reverseResult = reverse([1, 2, 3, 4, 5]); 
+ 	eq(reverseResult.length, 5); 
+ 	eq(JSON.stringify(reverseResult), JSON.stringify([5, 4, 3, 2, 1])); 
+ },
+ 'It should mutate the array.': function() {
+ 	const reverseResult = reverse(['a', 'b', 3, 'c']); 
+ 	eq(reverseResult.length, 4); 
+ 	eq(JSON.stringify(reverseResult), JSON.stringify(['c', 3, 'b', 'a'])); 
+ }
+});
+</script>

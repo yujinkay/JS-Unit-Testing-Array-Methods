@@ -1,0 +1,99 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function slice(array, begin, end) {
+    const resultArray = []; 
+    const length = array.length; 
+    let startingIndex = begin;  
+    let endingIndex = end; 
+    // Check if the startingIndex is valid 
+    if (startingIndex >= length || ((endingIndex < 0) && Math.abs(endingIndex)) > length) {
+      return resultArray; 
+    // If valid, do additional checks to reassign the startingIndex
+    } else if (!startingIndex || Math.abs(startingIndex) >= length) startingIndex = 0; 
+      else if (startingIndex < 0) startingIndex = startingIndex + length; 
+    // Reassign the endingIndex
+    if (!endingIndex || endingIndex > length) endingIndex = length; 
+    else if (endingIndex < 0) endingIndex = length - Math.abs(endingIndex);  
+    // Iterate from the startingIndex to endingIndex
+    for (let i = startingIndex; i < endingIndex; i++) {
+      resultArray.push(array[i]); 
+    }
+    // Return the resultArray
+    return resultArray; 
+}; 
+
+tests({
+  'It should return an array.': function() {
+      const sliceResult = slice([1, 2, 3], 0, 3); 
+      eq(Array.isArray(sliceResult), true); 
+  },
+  'It should extract from startingIndex + array.length if the startingIndex is negative.': function() {
+      const sliceResult1 = slice([1, 2, 3, 4, 5], -1); 
+      const sliceResult2 = slice([1, 2, 3, 4, 5], -3); 
+      eq(JSON.stringify(sliceResult1), JSON.stringify([5]));
+      eq(JSON.stringify(sliceResult2), JSON.stringify([3, 4, 5]));
+  },
+  'It should extract from 0th index if startingIndex is undefined.': function() {
+      const sliceResult = slice([1, 2, 3, 4, 5], undefined); 
+      eq(JSON.stringify(sliceResult), JSON.stringify([1, 2, 3, 4, 5])); 
+  },
+  'It should extract from 0th index if absolute value of startingIndex is greater or equal to array.length.': function() {
+      const sliceResult = slice([1, 2, 3, 4, 5], -6);
+      eq(JSON.stringify(sliceResult), JSON.stringify([1, 2, 3, 4, 5]));
+  },
+  'It should return an empty array if startingIndex is greater or equal to array.length.': function() {
+      const sliceResult = slice([1, 2, 3, 4, 5], 5); 
+      eq(JSON.stringify(sliceResult), JSON.stringify([])); 
+      eq(sliceResult.length, 0); 
+  },
+  'It should extract up to but not including the endingIndex.': function() {
+      const sliceResult = slice([1, 2, 3, 4, 5], 0, 3); 
+      eq(JSON.stringify(sliceResult), JSON.stringify([1, 2, 3])); 
+  },
+  'It should extract up to the last index of array if no endingIndex is provided.': function() {
+      const sliceResult = slice([1, 2, 3, 4, 5], 0); 
+      eq(JSON.stringify(sliceResult), JSON.stringify([1, 2, 3, 4, 5])); 
+  },
+  'It should extract up to the last index of array if the endingIndex is greater or equal to array.length.': function() {
+      const sliceResult = slice([1, 2, 3, 4, 5], 0, 6); 
+      eq(JSON.stringify(sliceResult), JSON.stringify([1, 2, 3, 4, 5]));     
+  },
+  'It should return an empty array if the absolute value of endingIndex is greater or equal to array.length.': function() {
+      const sliceResult = slice([1, 2, 3, 4, 5], 0, -5); 
+      eq(JSON.stringify(sliceResult), JSON.stringify([])); 
+      eq(sliceResult.length, 0); 
+  }, 
+  'It should extract up to but not include array.length + endingIndex if endingIndex is negative.': function() {
+      const sliceResult1 = slice([1, 2, 3, 4, 5], 0, -1); 
+      const sliceResult2 = slice([1, 2, 3, 4, 5], 0, -4); 
+      eq(JSON.stringify(sliceResult1), JSON.stringify([1, 2, 3, 4]));
+      eq(JSON.stringify(sliceResult2), JSON.stringify([1]));
+  }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

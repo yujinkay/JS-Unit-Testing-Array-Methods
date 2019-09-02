@@ -1,0 +1,59 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function concat () {
+    const resultArray = []; 
+  // Loop through the arguments 
+    for (let j = 0; j < arguments.length; j++) {
+      const elementToAdd = arguments[j]; 
+      // Check if an argument is an array
+      if (Array.isArray(elementToAdd)) {
+          // Loop through the array to add the individual elements
+        for (let i = 0; i < elementToAdd.length; i++) {
+            // Add individual elements into the result array
+            resultArray.push(elementToAdd[i]); 
+        }
+      // If primitives/objects, add the values as they are
+      } else {
+        resultArray.push(elementToAdd); 
+      }
+    }
+      return resultArray; 
+}; 
+
+tests({
+  'It should accept primitives as well as objects as arguments.': function() {
+        const concatResult = concat([1], 2, null, true, 'hello', {name: 'Sam'}); 
+        eq(JSON.stringify(concatResult), JSON.stringify([1, 2, null, true, 'hello', {name: 'Sam'}])); 
+  },
+  'It should create a new array of all values(arguments) concated in order.': function() {
+        const concatResult = concat([1], 2, 3); 
+        eq(JSON.stringify(concatResult), JSON.stringify([1, 2, 3])); 
+
+  },
+  'It should return a shallow copy of the original array if no values are passed in.': function() {
+        const originalArray = [1, 2, 3]; 
+        const concatResult = concat(originalArray); 
+        eq(JSON.stringify(concatResult), JSON.stringify([1, 2, 3])); 
+        eq(originalArray === concatResult, false); 
+
+  },
+  'It should return a new array.': function() {
+        const originalArray = [1, 2, 3]; 
+        const concatResult = concat(originalArray); 
+        eq(originalArray === concatResult, false);
+  },
+  'It should keep the order of arguments when concatenated.': function() {
+      const originalArray = [1, 2, 3]; 
+      const concatArray = [4, 5, 6]; 
+      const concatResult = concat(originalArray, concatArray); 
+      eq(originalArray, originalArray); 
+      eq(concatArray, concatArray); 
+  }, 
+  'It should not skip holes and include them.': function() {
+      const originalArray = [1, , , 3]; 
+      const concatResult = concat(originalArray, [4, , 5]); 
+      eq(concatResult.length, 7); 
+  }
+});
+</script>

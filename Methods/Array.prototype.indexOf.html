@@ -1,0 +1,50 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function indexOf(array, element, index) {
+    let startingIndex = index, 
+          searchElement = element;
+    const length = array.length; 
+    // Check the startingIndex 
+    if (startingIndex >= length) return -1; 
+    // Initialize the startingIndex to 0 if the conditions below are met
+    else if (!startingIndex || Math.abs(startingIndex) > length) startingIndex = 0;
+    // Initialize the startingIndex to its value + length if less than 0 
+    else if (startingIndex < 0) startingIndex =  startingIndex + length; 
+    // Iterate from the startingIndex to the end of array   
+    for (let i = startingIndex; i < length; i++) {
+      // If the element is found, return its index
+        if (array[i] === searchElement) return i; 
+    }
+      // Otherwise, return -1
+      return -1; 
+}; 
+
+tests({
+  'It should return -1 if the startingIndex is greater or equal to array.length.': function() {
+    const indexOfResult = indexOf([1, 1, 1], 1, 3); 
+    eq(indexOfResult, -1); 
+  },
+  'It should start from array.length + startingIndex if the latter is negative.': function() {
+    const indexOfResult = indexOf([1, 1, 1], 1, -2); 
+    eq(indexOfResult, 1); 
+  },
+  'It should start from index 0 if the absolute value of startingIndex is greater than array.length.': function() {
+    const indexOfResult = indexOf([1, 1, 1], 1, -4); 
+    eq(indexOfResult, 0); 
+  },
+  'It should return the first index of the search element in the array from the startingIndex.': function() {
+    const indexOfResult = indexOf([1, 1, 1], 1, 1); 
+    eq(indexOfResult, 1); 
+  },
+  'It should start from index 0 if not specified.': function() {
+    const indexOfResult = indexOf([1, 1, 1], 1); 
+    eq(indexOfResult, 0); 
+  }, 
+
+  'It should return -1 if search element is not found in array.': function() {
+      const indexOfResult = indexOf([1, 1, 1], 2); 
+      eq(indexOfResult, -1); 
+  }
+});
+</script>

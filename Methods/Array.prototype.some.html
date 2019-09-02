@@ -1,0 +1,66 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function some(array, callback, optionalThis) {
+	// Check to see if optional `this` argument has been passed in
+	callback = optionalThis ? callback.bind(optionalThis) : callback; 
+	// Iterate through the array and check if at least one element 
+	// returns a truthy value to callback
+	for (let i = 0; i < array.length; i++) {
+		if (i in array && callback(array[i], i, array)) return true; 
+	}
+	// Otherwise, return false
+	return false;  
+};  
+
+tests({
+  'It should pass in the ith element as the first argument.': function() {
+  		some([1], function(element) {
+				eq(element, 1); 
+		}); 
+  },
+  'It should pass in the ith position as the optional second argument.': function() {
+  		some([1], function(element, index) {
+				eq(index, 0); 
+		}); 
+  },
+  'It should pass in the array as the optional third argument.': function() {
+  		const testArray = [1, 2, 3]; 
+  		some(testArray, function(element, index, array) {
+				eq(testArray, array); 
+        eq(Array.isArray(array), true); 
+		}); 
+  },
+  'It should pass in an optional This argument.': function() {
+  		const result = some([1, 2, 3], function() {
+			eq(this.description, 'This is the optional This value.'); 
+		}, {description: 'This is the optional This value.'}); 
+  },
+  'It should return true if the callback returns truthy for any element.': function() {
+  		const result = some([1, 2, 3], function (element) {
+  						return element > 2; 
+  		});
+  		eq(result, true); 
+  },
+  'It should return false if there is no element satisfying the callback.': function() {
+  		const result = some([1, 2, 3], function (element) {
+  						return element > 5; 
+  		});
+  		eq(result, false); 
+  },
+  'It should skip holes in the array.': function() {
+  		const testArray = [ , , , 4]; 
+  		let counter = 0; 
+  		const result = some(testArray, function() {
+  						counter++; 
+  		}); 	
+  		eq(counter, 1); 
+  },
+  'It should not mutate the original array.': function() {
+  		const originalArray = [1, 2, 3]; 
+  		const result = some(originalArray, function(element, index, array) {
+  			eq(originalArray, array); 
+  		}); 
+  }
+});
+</script>

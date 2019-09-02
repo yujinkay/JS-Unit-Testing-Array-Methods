@@ -1,0 +1,77 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function unshift(array) {
+  // Declare a variable and assign to 0
+  let startingIndex = 0; 
+  // Iterate through the arguments object 
+  for (let i = 1; i < arguments.length; i++) {
+      // Declare a constant and assign to the current argument 
+      const element = arguments[i]; 
+      // Add the argument to the beginning of the array
+      array.splice(startingIndex, 0, element); 
+      // Increment the startingIndex
+      startingIndex++; 
+  }
+  // Return the new length
+  return array.length; 
+}
+
+tests({
+  'It should add one or more elements to the beginning of an array.': function() {
+      const testArray = [1, 2, 3]; 
+      const unshiftTest = unshift(testArray, 0); 
+      eq(unshiftTest, 4); 
+      eq(JSON.stringify(testArray), JSON.stringify([0, 1, 2, 3])); 
+      eq(testArray.length, 4); 
+  },
+  'It should return the length of the array.': function() {
+      const testArray = [3, 4, 5]; 
+      const unshiftTest = unshift(testArray, 1, 2); 
+      eq(unshiftTest, 5); 
+      eq(testArray.length, 5); 
+  },
+  'It should change the length of the array.': function() {
+      const testArray = [1, 2, 3, 4, 5]; 
+      const unshiftTest = unshift(testArray, 0); 
+      eq(testArray.length, 6); 
+  },
+  'It insert the multiple elements passed in at the beginning of array.': function() {
+      const testArray = [1, 2, 3]; 
+      const unshiftTest = unshift(testArray, 4, 5, 6); 
+      eq(JSON.stringify(testArray), JSON.stringify([4, 5, 6, 1, 2, 3])); 
+      eq(unshiftTest, 6); 
+  }, 
+  'It should be able to add items to an empty array.': function() {
+      const testArray = []; 
+      const unshiftTest = unshift(testArray, 1, 2, 3); 
+      eq(JSON.stringify(testArray), JSON.stringify([1, 2, 3]));
+      eq(unshiftTest, 3); 
+  }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,64 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function every(array, callback, optionalThis) {
+	// Check if the optional `this` argument has been passed in 
+	// If so, use the bind method to bind to `this`
+	callback = optionalThis ? callback.bind(optionalThis) : callback; 
+	// Iterate through the array and check each element 
+	for (let i = 0; i < array.length; i++) {
+		if (i in array && !callback(array[i], i, array)) return false; 
+	}
+	return true;  
+};  
+
+tests({
+  'It should pass in the ith element as the first argument.': function() {
+  		every([1], function(element) {
+			eq(element, 1); 
+		}); 
+  },
+  'It should pass in the ith position as the optional second argument.': function() {
+  		every([1], function(element, index) {
+			eq(index, 0); 
+		}); 
+  },
+  'It should pass in the array as the optional third argument.': function() {
+  		const testArray = [1, 2, 3]; 
+  		every(testArray, function(element, index, array) {
+			eq(testArray, array); 
+		}); 
+  },
+  'It should pass in an optional This value.': function() {
+  		const result = every([1, 2, 3], function() {
+			     eq(this.description, 'This is the optional This value.'); 
+		}, {description: 'This is the optional This value.'}); 
+  },
+  'It should return true if the callback returns truthy value for every element.': function() {
+  		const result = every([1, 2, 3], function (element) {
+  						return element < 5; 
+  		});
+  		eq(result, true); 
+  },
+  'It should return false if the callback returns a falsy value.': function() {
+  		const result = every([1, 2, 3], function (element) {
+  						return element > 5; 
+  		});
+  		eq(result, false); 
+  },
+  'It should skip holes in the array.': function() {
+  		const testArray = [ , , , 4]; 
+  		let counter = 0; 
+  		const result = every(testArray, function() {
+  						counter++; 
+  		}); 	
+  		eq(counter, 1); 
+  },
+  'It should not mutate the original array.': function() {
+  		const originalArray = [1, 2, 3]; 
+  		const result = every(originalArray, function(element, index, array) {
+  			     	eq(originalArray, array); 
+  		}); 
+  }
+});
+</script>

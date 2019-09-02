@@ -1,0 +1,67 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function shift(array) {
+    // Declare a constant and initialize to the first item of array 
+    const firstItem = array[0];
+    // Check to see if array is empty 
+    if (array.length === 0) return undefined; 
+    // Iterate through the items from index 1 and shift by one.
+    for (let i = 1; i < array.length; i++) {
+          array[i - 1] = array[i]; 
+      }
+      // Fix the length of the array omitting the last item which is duplicated from the loop.
+      array.length = array.length - 1; 
+      // Return the removed first item
+      return firstItem; 
+}; 
+
+
+tests({
+  'It should remove the first element of the array.': function() {
+      const testArray = [1, 2, 3]; 
+      const shiftTest = shift(testArray); 
+      eq(shiftTest, 1); 
+      eq(JSON.stringify(testArray), JSON.stringify([2, 3])); 
+      eq(testArray.length, 2); 
+  },
+  'It should return the removed element.': function() {
+      const shiftTest = shift([1, 2, 3, 4, 5]); 
+      eq(shiftTest, 1); 
+  },
+  'It should change the length of the array.': function() {
+      const testArray = [1, 2, 3, 4, 5]; 
+      const shiftTest = shift(testArray); 
+      eq(testArray.length, 4); 
+  },
+  'It should return undefined if the array is empty.': function() {
+      const shiftTest = shift([]); 
+      eq(shiftTest, undefined); 
+  }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

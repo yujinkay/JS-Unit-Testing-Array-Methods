@@ -1,0 +1,85 @@
+<script src="../tinytest.js"></script>
+<script>
+
+  function join(array, separator) { 
+      let resultString = '';  
+      const length = array.length; 
+      // Check for separator
+      separator = !separator ? ',' : separator; 
+      // Iterate through the array and convert into a single string
+      for (let i = 0; i < length; i++) {
+          const element = array[i];  
+          const index = i;  
+      // Empty character for undefined or null values (holes in array)
+        if (element === undefined || element === null) resultString += ''; 
+      // Otherwise, add the element
+        else resultString += element; 
+        // Add separator until the last index
+        if (index < length - 1) resultString += separator;  
+      } 
+      // Return the string
+      return resultString; 
+  }; 
+
+tests({
+  'It should return a string with all elements joined..': function() {
+    const joinTest1 = join(['a', 'b', 'c']);
+    eq(joinTest1, 'a,b,c'); 
+  },
+  'It should return an empty string if array.length is 0.': function() {
+    const joinTest = join([]);
+    eq(joinTest, ''); 
+    eq(joinTest.length, 0); 
+  },
+'It should convert undefined values into empty strings.': function() {
+    const joinTest1 = join([undefined, undefined]); 
+    const joinTest2 = join([ , , ]); 
+    eq(joinTest1, joinTest2); 
+    eq(joinTest1, ','); 
+    eq(joinTest2, ',');  
+  },
+'It should convert null values into empty strings.': function() {
+    const joinTest = join([null, null]); 
+    eq(joinTest, ','); 
+  },
+'If should return the solo value of the single item in array.': function() {
+    const joinTest = join(['a']); 
+    eq(joinTest, 'a'); 
+  },
+
+'It should separate elements by comma if separator is omitted.': function() {
+    const joinTest = join([1, 2, 3]); 
+    eq(joinTest, '1,2,3'); 
+  },
+
+'It should separate elements by separator if specified.': function() {
+    const joinTest = join([1, 2, 3], "!"); 
+    eq(joinTest, '1!2!3'); 
+  }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

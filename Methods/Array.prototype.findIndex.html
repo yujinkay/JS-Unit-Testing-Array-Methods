@@ -1,0 +1,66 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function findIndex(array, callback, optionalThis) {
+	// Check to see if the optional `this` argument has been passed in 
+	callback = optionalThis ? callback.bind(optionalThis) : callback; 
+	// Iterate through the array and if the item returns truthy to the callback
+	// Return the index
+	for (let i = 0; i < array.length; i++) {
+		if (callback(array[i], i, array)) return i; 
+	}
+	// Otherwise, return 1
+    return -1; 
+}
+
+tests({
+  'It should pass in the ith element as the first argument to the callback.': function() {
+ 	 	findIndex([1], function(element) {
+			eq(element, 1); 
+		}); 
+  },
+  'It should pass in an ith index as the optional second argument.': function() {
+  		findIndex([1], function(element, index) {
+			   eq(index, 0); 
+		}); 
+  },
+  'It should pass in the array as the optional third argument.': function() {
+  		const testArray = [1, 2, 3]; 
+  		findIndex(testArray, function(element, index, array) {
+			eq(testArray, array); 
+		}); 
+  },
+  'It should not skip unassigned values.': function() {
+  		let counter = 0; 
+  		const result = findIndex([1, , 3], function() {
+  			counter++;
+  		}); 
+  		eq(counter, 3); 
+  },
+  'It should pass in an optional This value.': function() {
+  		findIndex([1, 2, 3], function() {
+  			eq(this.description, 'This is the optional This value.')
+  		}, {description: 'This is the optional This value.'})
+  },
+  'It should return the ith position of the element satisfying the callback.': function() {
+  		const testArray = [1, 2, 3, 1]; 
+  		const result = findIndex(testArray, function(element) {
+  				return element === 1; 
+  		}); 
+  		eq(result, 0); 
+  },
+  'It should return -1 if no element satisfies the callback.': function() {
+  		const testArray = [1, 2, 3]; 
+  		const result = findIndex(testArray, function(element) {
+  				return element === 4; 
+  		}); 
+  		eq(result, -1); 
+  },
+  'It should return -1 if the array.length is 0.': function() {
+  		const originalArray = []; 
+  		const result = find(originalArray, function(element, index, array) {
+  			eq(result, -1); 
+  		})
+  },
+});
+</script>

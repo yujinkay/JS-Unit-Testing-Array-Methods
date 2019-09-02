@@ -1,0 +1,61 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function pop(array) {
+  // Declare a constant and initialize to the last item in array 
+  const lastItem = array[array.length -1];
+  // Reassign the length of array 
+  array.length = array.length > 0 ? array.length - 1 : array.length;  
+  // If empty, return undefined
+  if (Object.keys(array) === 0) return undefined; 
+  // Otherwise, return the last item
+  return lastItem; 
+}; 
+
+tests({
+  'It should remove the last element of the array.': function() {
+      const testArray = [1, 2, 3]; 
+      const popTest = pop(testArray); 
+      eq(popTest, 3); 
+      eq(JSON.stringify(testArray), JSON.stringify([1, 2])); 
+  },
+  'It should return the removed element.': function() {
+      const popTest = pop([1, 2, 3, 4, 5]); 
+      eq(popTest, 5); 
+  },
+  'It should change the length of the array.': function() {
+      const testArray = [1, 2, 3, 4, 5]; 
+      const popTest = pop(testArray); 
+      eq(testArray.length, 4); 
+  },
+  'It should return undefined if the array is empty.': function() {
+      const popTest = pop([]); 
+      eq(popTest, undefined); 
+  }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

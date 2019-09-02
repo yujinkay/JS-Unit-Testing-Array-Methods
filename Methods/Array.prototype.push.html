@@ -1,0 +1,58 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function push(array) {
+  // Iterate through the arguments object 
+  for (let i = 1; i < arguments.length; i++) {
+    // Reassign the last index + 1 to the element and repeat if needed
+    array[array.length] = arguments[i]; 
+    }
+    // return the new length
+    return array.length; 
+}
+
+tests({
+  'It should add one or more elements to the end of the array.': function() {
+      const originalArray = [1, 2, 3]; 
+      const pushResult = push(originalArray, 4); 
+      eq(pushResult, 4); 
+      eq(JSON.stringify(originalArray), JSON.stringify([1, 2, 3, 4])); 
+  },
+  'It should return the new array.length.': function() {
+      const originalArray = ['a', 'b', 'c']; 
+      const pushResult = push(originalArray, 'd'); 
+      eq(pushResult, 4); 
+      eq(originalArray.length, 4); 
+  },
+  'It should return the original array.length if no items are added.': function() {
+      const originalArray = [1, 2, 3]; 
+      const pushResult = push(originalArray); 
+      eq(pushResult, 3); 
+  }
+});
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

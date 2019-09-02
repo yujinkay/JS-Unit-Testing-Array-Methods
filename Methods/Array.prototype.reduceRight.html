@@ -1,0 +1,149 @@
+<script src="../tinytest.js"></script>
+<script>
+
+function reduceRight(array, callback, initialValue) {	
+	let resultSoFar = initialValue, 
+		startingIndex = array.length - 1, 
+		arrayIndexes = Object.keys(array);
+	// If no initialValue is provided, the last item of the array will be the initialValue
+	if (arguments.length < 3) {
+		// If array is empty throw TypeError
+		if (arrayIndexes.length === 0) throw new TypeError('Array is empty with no initialValue.'); 		
+		// If there's only one element, return the solo value.
+		if (arrayIndexes.length === 1) return array[0]; 
+		// Decrement the startingIndex while it's greater than -1 
+		while (startingIndex in array === false && startingIndex > -1) {
+			startingIndex--; 
+		}
+		// Reassign the resultSoFar and decrement the startingIndex 	
+		resultSoFar = array[startingIndex]; 
+		startingIndex--; 
+		// If the array is empty, return resultSoFar
+		} else if (arrayIndexes.length === 0) return resultSoFar; 
+		// Iterate from the startingIndex to the 0th index
+		for (let i = startingIndex; i > -1; i--) {
+			// Check to see if the item is valid (not a hole) 
+			// And reassign resultSoFar to the evaluated result of invoking callback on 
+			// resultSoFar and the current item 
+			if (i in array) resultSoFar = callback(resultSoFar, array[i], i, array); 
+		}
+	// Return the aggregated resultSoFar
+	return resultSoFar; 
+}; 
+
+tests({
+	'If initialValue, the previousValue equals to the initialValue.': function() {
+		let initialValue = 0; 
+		reduceRight([1], function(previousValue) {
+			eq(previousValue, initialValue); 	
+		}, initialValue); 
+	},
+	'If initialValue, currentValue will be equal to the last item of array.': function() {
+		reduceRight([1], function(previousValue, currentValue) {
+			eq(currentValue, 1); 
+		}, 0); 
+	},
+	'If no initialValue, the previousValue is the last value in array.': function() {
+		const testArray = [1, 2]; 
+		reduceRight(testArray, function(previousValue) {
+			eq(previousValue, 2); 
+		}); 
+	},
+	'If no initialValue, the currentValue would be the penultimate value in array.': function() {
+		const testArray = [1, 2]; 
+		reduceRight(testArray, function(previousValue, currentValue) {
+			eq(currentValue, 1); 
+		}); 
+	},
+	'If initialValue, it should run the callback once for each value.': function() {
+		let numberOfTimesCallbackHasRun = 0; 
+		reduceRight([1, 2, 3], function() {
+			numberOfTimesCallbackHasRun++; 
+		}, 0); 
+		eq(numberOfTimesCallbackHasRun, 3); 
+	},
+	'If no intialValue, it should run the callback array.length - 1 times.': function() {
+		let numberOfTimesCallbackHasRun = 0; 
+		reduceRight([1, 2, 3], function() {
+			numberOfTimesCallbackHasRun++; 
+		}); 
+		eq(numberOfTimesCallbackHasRun, 2); 
+	}, 
+	'It should exclude holes.': function() {
+		const testArray = [ , 2, 3, ,]; 
+		const testResult = reduceRight(testArray, function(a, b) {
+				return a + b; 
+			}); 
+		eq(testResult, 5); 
+	},
+	'It should actually reduceRight.': function() {
+		const testResult = reduceRight([1, 2, 3], function(a, b) {
+			return a + b; 
+		}); 
+		eq(testResult, 6); 
+	},
+	'If no initialValue and the array is empty, throw TypeError.': function() {
+		let newTypeError = false; 
+		try { reduceRight([], function() {})
+		} catch (e) {
+			newTypeError = (e instanceof TypeError); 
+		}; 
+		eq(newTypeError, true); 
+
+	},
+	'If no initialValue and the array has one element, return the solo value without calling callback.': function() {
+		let numberOfTimesCallbackHasRun = 0; 
+		const testResult = reduceRight([1], function() {
+				numberOfTimesCallbackHasRun++; 
+		}); 
+		eq(testResult, 1); 
+		eq(numberOfTimesCallbackHasRun, 0); 
+	},
+	'If initialValue and the array is empty, it should return the solo value without calling callback.': function() {
+		let initialValue = 10; 
+		let numberOfTimesCallbackHasRun = 0; 
+		const testResult = reduceRight([], function() {
+				numberOfTimesCallbackHasRun++; 
+			}, initialValue); 
+		eq(testResult, 10); 
+		eq(numberOfTimesCallbackHasRun, 0); 
+	}
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</script>
