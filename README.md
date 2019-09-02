@@ -1,3 +1,10 @@
+Recreated JavaScript Array Methods With Unit Testing
+=======================================
+This repo contains a collection of functions recreated to mimic the built-in array methods for JavaScript. The methods include reduceRight, splice, slice, copyWithin, fill, and many more. I utilized an in-browser JS library called tinyTest (more info below) to unit test each function and accounting for edge cases.  
+
+Hopefully this can help if you just started learning JavaScript! 
+
+
 Tiniest JavaScript unit testing library
 =======================================
 
